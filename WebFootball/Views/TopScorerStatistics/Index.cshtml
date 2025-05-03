@@ -1,0 +1,41 @@
+﻿@model List<TopScorerStatistics>
+
+<div class="container mt-4">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold text-dark">Top Scorers</h2>
+        <p class="text-muted">A breakdown of players who lead in goals, assists, and penalties.</p>
+    </div>
+
+    <div class="table-responsive shadow-sm rounded-3">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr class="text-secondary text-uppercase small">
+                    <th scope="col">Player</th>
+                    <th scope="col">Team</th>
+                    <th scope="col">Played</th>
+                    <th scope="col">Goals</th>
+                    <th scope="col">Assists</th>
+                    <th scope="col">Penalties</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="fw-medium">@item.Person?.Name</td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="@item.Team!.IconLink" alt="@item.Team.Name" style="max-height: 28px;" class="rounded shadow-sm">
+                                <a href="/Team/Index?team_id=@item.Team?.Id" class="text-decoration-none text-dark fw-semibold">@item.Team?.ShortName</a>
+                            </div>
+                        </td>
+                        <td>@(item.PlayedMatches ?? 0)</td>
+                        <td class="fw-bold text-success">@item.Goals</td>
+                        <td>@(item.Assists ?? 0)</td>
+                        <td>@(item.Penalties ?? 0)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

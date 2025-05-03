@@ -1,0 +1,108 @@
+﻿@model MatchesForDayViewModel
+
+<div class="container my-5">
+    <div class="row">
+        <!-- Filters Section -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5>Select Filters</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Competition Filter -->
+                    <div class="mb-3">
+                        <label for="competitionSelect" class="form-label">Select Competition</label>
+                        <select class="form-select" id="competitionSelect" onchange="redirectWithParams()">
+                            @foreach (var competition in Model.Competitions)
+                            {
+                                <option value="@competition.Id"
+                                        selected="@(competition.Id == Model.SelectedCompetitionId ? "selected" : null)">
+                                    @competition.Name
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    <!-- Matchday Filter -->
+                    <div class="mb-3">
+                        <label for="matchdaySelect" class="form-label">Select Matchday</label>
+                        <select class="form-select" id="matchdaySelect" onchange="redirectWithParams()">
+                            @foreach (int matchday in Model.MatchDays)
+                            {
+                                <option value="@matchday" selected="@(matchday == Model.SelectedMatchDay ? "selected" : null)">
+                                    @matchday
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Matches Table Section -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5>Matches</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Home Team</th>
+                                <th>Score</th>
+                                <th>Away Team</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var match in Model.Matches)
+                            {
+                                <tr>
+                                    <td>
+                                        <span class="d-block fw-bold" style="font-size: 0.875rem;">
+                                            @match.MatchDatetime.ToString("dd MMM yyyy", System.Globalization.CultureInfo.InvariantCulture)
+                                        </span>
+                                        <small class="text-muted" style="font-size: 0.75rem;">
+                                            @match.MatchDatetime.ToString("HH:mm")
+                                        </small>
+                                    </td>
+                                    <td><a href="/Team/Index?team_id=@match.HomeTeamId">@match.HomeTeam.ShortName</a></td>
+                                    <td>
+                                        @if (match.Status == "FINISHED")
+                                        {
+                                            <div>
+                                                <strong>@match.FullTimeHome : @match.FullTimeAway</strong>
+                                            </div>
+                                            <div class="text-muted small">
+                                                (@match.HalfTimeHome : @match.HalfTimeAway)
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                    <td> <a href="/Team/Index?team_id=@match.AwayTeamId"> @match.AwayTeam.ShortName </a> </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        function redirectWithParams() {
+            console.log("Script is working!");
+
+            const competitionId = document.getElementById('competitionSelect').value;
+            const matchday = document.getElementById('matchdaySelect').value;
+            const url = `/Match/Index?competition_id=${competitionId}&matchday=${matchday}`;
+            window.location.href = url;
+        }
+    </script>
+}

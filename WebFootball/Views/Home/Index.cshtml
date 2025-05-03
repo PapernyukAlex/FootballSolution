@@ -1,0 +1,56 @@
+﻿@model CompetitionsAndSelected
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h2 class="fw-semibold text-dark">⚽ Welcome to the Football Hub</h2>
+        <p class="text-muted fs-5">Explore everything about football competitions, match schedules, and top players.</p>
+    </div>
+
+    <div class="d-flex justify-content-center mb-4">
+        <div class="col-md-6">
+            <label for="competitionSelect" class="form-label fw-semibold">Select Competition</label>
+            <select class="form-select shadow-sm" id="competitionSelect" onchange="updateLinksInButtons()">
+                @foreach (var competition in Model.Competitions)
+                {
+                    <option value="@competition.Id" 
+                        selected="@(competition.Id == Model.SelectedCompetitionId)"
+                        >
+                        @competition.Name
+                    </option>
+                }
+            </select>
+        </div>
+
+    </div>
+
+    <div class="row g-3 justify-content-center">
+        <div class="col-md-3">
+            <a id="matchButton" class="btn btn-outline-secondary w-100 py-3 shadow-sm rounded-3"
+               href="@($"/Match/Index?competition_id={Model.SelectedCompetitionId}")">
+                📅 Matches
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a id="tableButton" class="btn btn-outline-secondary w-100 py-3 shadow-sm rounded-3"
+               href="@($"/TeamPosition/Index?competition_id={Model.SelectedCompetitionId}")">
+                📊 Table
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a id="topScorerButton" class="btn btn-outline-secondary w-100 py-3 shadow-sm rounded-3"
+               href="@($"/TopScorerStatistics/Index?competition_id={Model.SelectedCompetitionId}")">
+                🥇 Top Scorers
+            </a>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function updateLinksInButtons() {
+        const competitionId = document.getElementById('competitionSelect').value;
+
+        document.getElementById("matchButton").href = `/Match/Index?competition_id=${competitionId}`;
+        document.getElementById("tableButton").href = `/TeamPosition/Index?competition_id=${competitionId}`;
+        document.getElementById("topScorerButton").href = `/TopScorerStatistics/Index?competition_id=${competitionId}`;
+    }
+</script>
