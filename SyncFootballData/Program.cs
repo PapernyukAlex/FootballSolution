@@ -29,6 +29,5 @@ class Program
         job.Process(2024, 2002);
         job.Process(2024, 2014);
         job.Process(2024, 2015);
-        Console.WriteLine("asf");
     }
 }
