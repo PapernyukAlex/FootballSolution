@@ -40,7 +40,7 @@ namespace FootballExtractor
         private void processMatches(List<int> teamsIds)
         {
             List<int> existingMatchesIds = unitOfWork.MatchRepository.GetIdsByCompetition(CompetitionId);
-            var minDateNotFinishedMatch = unitOfWork.MatchRepository.GetMinDateNotFinishedMatchInDb(CompetitionId);
+            var likelyFinishedMatches = unitOfWork.MatchRepository.GetIdsOfLikelyCompletedMatchesByCompetition(CompetitionId);
             var updateMatches = new List<Match>();
             foreach (var teamId in teamsIds)
             {
@@ -50,8 +50,7 @@ namespace FootballExtractor
                 var newMatches = new List<Match>();
                 foreach (var match in matches)
                 {
-                    if (minDateNotFinishedMatch != null && minDateNotFinishedMatch <= match.MatchDatetime
-                        && match.MatchDatetime < DateTime.Now
+                    if (likelyFinishedMatches.Contains(match.Id)
                         && !updateMatches.Any(m => m.Id == match.Id))
                         updateMatches.Add(match);
                     if (!existingMatchesIds.Contains(match.Id))

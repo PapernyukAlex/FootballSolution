@@ -16,13 +16,13 @@ namespace FootballShared.Repositories
                 .ToList();
         }
 
-        public DateTime? GetMinDateNotFinishedMatchInDb(int competitionId)
+        public HashSet<int> GetIdsOfLikelyCompletedMatchesByCompetition(int competitionId)
         {
             return _dbContext.Matches
                 .Where(m => m.CompetitionId == competitionId
                         && m.MatchDatetime < DateTime.UtcNow && m.Status != "FINISHED")
-                .Select(m => (DateTime?)m.MatchDatetime.Date)
-                .Min();
+                .Select(m => m.Id)
+                .ToHashSet();
         }
 
         public List<Competition> GetCompetitions()
