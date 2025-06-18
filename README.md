@@ -18,4 +18,4 @@ The project is designed to keep football data organized, accessible, and visuall
 - **System.Text.Json.Serialization** – For parsing and mapping JSON responses from the API  
 - **REST API Integration** – For fetching data from [football-data.org](https://www.football-data.org/)  
 - **Razor Views** – For rendering dynamic HTML content  
-- **Bootstrap** – For responsive and clean frontend design (if used)
+- **Bootstrap** – For responsive and clean frontend design
